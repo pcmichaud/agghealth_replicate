@@ -101,10 +101,11 @@ class initpars:
 
 
 class msm:
-    def __init__(self,country='us',initpar=None,verbose=False,nprocs=40):
+    def __init__(self,country='us',initpar=None,verbose=False,nprocs=40,ge=True):
         self.country = country
         self.initpar = []
         self.verbose = verbose
+        self.ge = ge
         # need load initial parameters
         if verbose: print('* Info on parameters initialized')
         if initpar!=None:
@@ -134,6 +135,7 @@ class msm:
     def set_moments(self,moms):
         self.moments = []
         self.nmoms = len(moms)
+        print('- using these moments:')
         for n in moms.index:
             this = moment()
             this.name = n
@@ -148,12 +150,12 @@ class msm:
         self.initpar.set_flex()
         csumers = micro.bellman(options=self.op,flex=self.initpar.flex,inc=self.inc,aux=self.aux,rent=3e-2)
         stats = dist.stationary(dp=csumers,nk=100)
-        self.eq = macro.equilibrium(stats=stats,initax=self.initax,inirent=1.5e-2,rent=True,taxes=False)
+        self.eq = macro.equilibrium(stats=stats,initax=self.initax,inirent=1.5e-2,rent=self.ge,taxes=False)
         self.eq.solve()
         aggs = self.eq.aggregates()
         report = self.eq.healthreport()
         if self.country=='us':
-            f = open(module_dir+'/model/moments/sim_gdp_us.csv','w')
+            f = open(module_dir+'/model/params/sim_gdp_us.csv','w')
             f.write('{}'.format(aggs.Y))
             f.close()
         # building simulated moments
@@ -179,13 +181,13 @@ class msm:
                 if self.country=='us':
                     m.sim = 1.0
                 else :
-                    f = open(module_dir+'/model/moments/sim_gdp_us.csv','r')
+                    f = open(module_dir+'/model/params/sim_gdp_us.csv','r')
                     tfp_us = float(f.readline())
                     f.close()
-                    print('us gdp is ',m.sim)
                     m.sim = aggs.Y/tfp_us
             distance += ((m.data - m.sim)/m.se)**2
         print('f = ',distance,', pars = ',theta)
+        print('- current state of moments (data, sim):')
         for m in self.moments:
             print(m.name,m.data,m.sim)
         del self.eq.stats.dp.optc
@@ -224,10 +226,9 @@ class msm:
                 m.sim = report.gradient[2]
             if m.name=='tfp':
                 if self.country!='us':
-                    f = open(module_dir+'/model/moments/sim_gdp_us.csv','r')
+                    f = open(module_dir+'/model/params/sim_gdp_us.csv','r')
                     tfp_us = float(f.readline())
                     f.close()
-                    print('us gdp is ',m.sim)
                     m.sim = aggs.Y/tfp_us
             moms.append(m.data - m.sim)
         del self.eq.stats.dp.optc
@@ -235,7 +236,7 @@ class msm:
         del self.eq.stats.dp.value
         return np.array(moms)
 
-    def estimate(self):
+    def estimate(self,maxeval=-1):
         for m in self.moments:
             if m.name == 'mshare':
                 mshare = m.data
@@ -349,26 +350,28 @@ class msm:
                         dx[j-1] = 0.25
                         simp[j,j-1] += 0.25                        
                 j +=1
-        #print('initial simplex = ',simp)
 
         opt = nl.opt('LN_NEWUOA',n)
         opt.set_min_objective(self.criterion)
         opt.set_initial_step(dx)
         
-        opt.set_maxeval(1)
-        #opt.set_xtol_abs(1e-4)
-        
+        opt.set_maxeval(maxeval)
+        opt.set_xtol_abs(1e-4)
         xopt = opt.optimize(theta)
+        if opt.last_optimize_result()==nl.SUCCESS:
+            self.opt_theta = xopt 
+            self.opt_distance = opt.last_optimum_value()
+        else :
+            self.opt_theta = theta 
+            self.opt_ditance = np.nan 
+            print('estimation did not converge, returns flag ',opt.last_optimize_result())
 
         #opt = minimize(self.criterion,theta,method='BFGS',options={'gtol':1.0} )
         #options={'initial_simplex': simp})
-        self.opt_theta = xopt 
-        self.opt_distance = opt.last_optimum_value()
+
         self.initpar.put_theta(self.opt_theta)
         self.initpar.set_flex()
-        print(vars(self.flex))
-
-        return
+        return 
 
     def covar(self):
         for m in self.moments:
@@ -378,30 +381,29 @@ class msm:
         self.eq.initax = initax
         thetas = self.initpar.extract_theta()
         n = self.nfreepar
-        eps = [1e-3, 1e-3, 1e-3, 1e-3]
+        eps = 1e-3*np.ones(n)
         if self.country=='sp':
-            eps = [.5*1e-2, .5*1e-2, .5*1e-2, .5*1e-2]
+            eps = 5e-3*np.ones(n)
         G = np.zeros((self.nmoms,n))
         mbase = self.criterion_moms(thetas)
         # compute G (matrix of derivatives)
         for k in range(n):
             thetas_up = thetas[:]
             if self.country=='sp':
-                thetas_up[k] = thetas_up[k]*(1+eps[k])
+                step = thetas_up[k]*eps[k]
+                thetas_up[k] = thetas_up[k] + step
             else:
+                step = eps[k]
                 thetas_up[k] = thetas_up[k]+eps[k]
             mup = self.criterion_moms(thetas_up)
-            G[:,k] = (mup - mbase)/eps
+            G[:,k] = (mup - mbase)/step
         # compute weight matrix
         W = np.zeros((self.nmoms,self.nmoms))
         for i,m in enumerate(self.moments):
             W[i,i] = 1/(m.se**2)
         # compute covar
         Cov = np.linalg.inv(G.transpose() @ W @ G)
-        print('Cov = ', Cov)
-        print('diag W =',np.diag(W))
-        print('diag Cov =',np.diag(Cov))
         se = np.sqrt(np.diag(Cov))
-        print('se =',se)
-        return se
+        self.se = se
+        return
 
