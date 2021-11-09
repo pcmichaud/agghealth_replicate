@@ -162,5 +162,5 @@ print(df)
 # In[15]:
 
 
-df.to_pickle('../model/params/params_ref_us.pkl')
+df.to_pickle('output/params_ref_us.pkl')
 

@@ -6,7 +6,7 @@ import numpy as np
 from scipy.optimize import minimize
 import csv
 from copy import deepcopy
-import nlopt  as nl 
+import nlopt  as nl
 import os
 module_dir = os.path.dirname(os.path.dirname(__file__))
 
@@ -125,13 +125,13 @@ class msm:
             op = params.settings(nprocs=nprocs,nk=30,curv=0.5,maxk=190.0)
         else:
             op = params.settings(nprocs=nprocs,nk=30,curv=0.5,maxk=150.0)
-        self.op = op 
+        self.op = op
         inc = params.incprocess(country=self.country)
         inc.tauchen(ne=op.ne,m=2.5)
-        self.inc = inc 
+        self.inc = inc
         aux = params.auxpars(country=self.country)
-        self.aux = aux 
-        return 
+        self.aux = aux
+        return
     def set_moments(self,moms):
         self.moments = []
         self.nmoms = len(moms)
@@ -257,13 +257,13 @@ class msm:
                     simp[j,:] = theta
                     if p.name=='sigma':
                         dx[j-1] = 0.25
-                        simp[j,j-1] += 0.25 
+                        simp[j,j-1] += 0.25
                     if p.name=='beta':
                         dx[j-1] = 0.01
                         simp[j,j-1] += 0.01
                     if p.name=='phi':
                         dx[j-1] = 0.1
-                        simp[j,j-1] += 0.1 
+                        simp[j,j-1] += 0.1
                     if p.name=='psi':
                         dx[j-1] = 0.1
                         simp[j,j-1] += 0.1
@@ -289,13 +289,13 @@ class msm:
                     simp[j,:] = theta
                     if p.name=='sigma':
                         dx[j-1] = 0.25
-                        simp[j,j-1] += 0.25 
+                        simp[j,j-1] += 0.25
                     if p.name=='beta':
                         dx[j-1] = 0.01
                         simp[j,j-1] += 0.01
                     if p.name=='phi':
                         dx[j-1] = 0.1
-                        simp[j,j-1] += 0.1 
+                        simp[j,j-1] += 0.1
                     if p.name=='psi':
                         dx[j-1] = 0.1
                         simp[j,j-1] += 0.1
@@ -321,13 +321,13 @@ class msm:
                     simp[j,:] = theta
                     if p.name=='sigma':
                         dx[j-1] = 0.25
-                        simp[j,j-1] += 0.25 
+                        simp[j,j-1] += 0.25
                     if p.name=='beta':
                         dx[j-1] = 0.01
                         simp[j,j-1] += 0.01
                     if p.name=='phi':
                         dx[j-1] = 0.1
-                        simp[j,j-1] += 0.1 
+                        simp[j,j-1] += 0.1
                     if p.name=='psi':
                         dx[j-1] = 0.1
                         simp[j,j-1] += 0.1
@@ -348,22 +348,22 @@ class msm:
                         simp[j,j-1] += 0.25
                     if p.name=='risk':
                         dx[j-1] = 0.25
-                        simp[j,j-1] += 0.25                        
+                        simp[j,j-1] += 0.25
                 j +=1
 
         opt = nl.opt('LN_NEWUOA',n)
         opt.set_min_objective(self.criterion)
         opt.set_initial_step(dx)
-        
+
         opt.set_maxeval(maxeval)
         opt.set_xtol_abs(1e-4)
         xopt = opt.optimize(theta)
-        if opt.last_optimize_result()==nl.SUCCESS:
-            self.opt_theta = xopt 
+        if opt.last_optimize_result()>0:
+            self.opt_theta = xopt
             self.opt_distance = opt.last_optimum_value()
         else :
-            self.opt_theta = theta 
-            self.opt_ditance = np.nan 
+            self.opt_theta = theta
+            self.opt_ditance = np.nan
             print('estimation did not converge, returns flag ',opt.last_optimize_result())
 
         #opt = minimize(self.criterion,theta,method='BFGS',options={'gtol':1.0} )
@@ -371,7 +371,7 @@ class msm:
 
         self.initpar.put_theta(self.opt_theta)
         self.initpar.set_flex()
-        return 
+        return
 
     def covar(self):
         for m in self.moments:

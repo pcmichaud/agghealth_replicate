@@ -25,7 +25,7 @@ co = 'sp'
 
 # # Moments
 
-# For European countries, we use 7 moments, the health GDP share, the transition rates from good and bad health to good health, the gradient (2, 3 and 4 relative to 1) and the GDP gap (with US). We setup a dataframe containing the values along with the standard deviations of the moments. 
+# For European countries, we use 7 moments, the health GDP share, the transition rates from good and bad health to good health, the gradient (2, 3 and 4 relative to 1) and the GDP gap (with US). We setup a dataframe containing the values along with the standard deviations of the moments.
 
 # In[17]:
 
@@ -61,8 +61,8 @@ moms
 
 # # Initial Parameters
 
-# For European countries, we fix risk aversion, the health benefit $\phi$, the productivity of health $\alpha_0$ (which is $\psi$ in the code) to their values found for the U.S. We then estimate the health intercepts $\alpha_{11}$ and $\alpha_{10}$ which are $\delta_{h1}$ and $\delta_{h2}$ in the code along with the price and tfp gap. 
-# 
+# For European countries, we fix risk aversion, the health benefit $\phi$, the productivity of health $\alpha_0$ (which is $\psi$ in the code) to their values found for the U.S. We then estimate the health intercepts $\alpha_{11}$ and $\alpha_{10}$ which are $\delta_{h1}$ and $\delta_{h2}$ in the code along with the price and tfp gap.
+#
 # If need to start away from solution to see that we converge, set this switch to true:
 
 # In[20]:
@@ -74,7 +74,7 @@ far = False
 # In[21]:
 
 
-pars_us = pd.read_pickle('../model/params/params_ref_us.pkl')
+pars_us = pd.read_pickle('output/params_ref_us.pkl')
 
 
 # In[22]:
@@ -83,7 +83,7 @@ pars_us = pd.read_pickle('../model/params/params_ref_us.pkl')
 if far:
 	guess = [ -0.5,  3.5,  0.75, 0.7]
 else :
-	guess = [ 0.002353013528025841953617014468, 3.434494399064982328440009951009, 
+	guess = [ 0.002353013528025841953617014468, 3.434494399064982328440009951009,
 		0.795094825596019183500118288066, 0.642583925569128244781325065560]
 
 
@@ -150,7 +150,7 @@ df
 # In[29]:
 
 
-df.to_pickle('../model/params/params_ref_sp.pkl')
+df.to_pickle('output/params_ref_sp.pkl')
 
 
 # In[ ]:
