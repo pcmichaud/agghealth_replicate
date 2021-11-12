@@ -82,7 +82,7 @@ pars_us = pd.read_pickle('output/params_ref_us.pkl')
 
 
 if far:
-	guess = [ -1.4, 4.4, 0.8, 0.9] 
+	guess = [ -1.4, 4.4, 0.8, 0.9]
 else :
 	guess = [-1.394792024492162330062683395226, 4.310991125833491643959405337228,
 		0.795414902706570559054455316073, 0.891688890447864812571765469329]
@@ -95,7 +95,7 @@ ipars = calibrate.initpars(params.flexpars(co))
 ipars.fix('sigma',pars_us.loc['sigma','value'])
 ipars.fix('phi',  pars_us.loc['phi','value'])
 ipars.fix('psi',  pars_us.loc['psi','value'])
-ipars.fix('beta', 0.97)
+ipars.fix('beta', 0.95)
 ipars.free('delta_h1',guess[0])
 ipars.free('delta_h2',guess[1])
 ipars.free('tfp',     guess[2])

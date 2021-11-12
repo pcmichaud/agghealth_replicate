@@ -62,16 +62,16 @@ print(moms)
 # In[5]:
 
 
-far = False
+far = True
 
 
 # In[6]:
 
 
 if far:
-	guess_us = [ 2.5,  0.2,  0.3, -0.5,  2]
+	guess_us = [ 2.0,  0.2,  0.3, -0.5,  2]
 else :
-	guess_us = [ 2.105317188787775961600345908664,  0.397404995088832035943227083408,  0.161578046077853032524984655538,
+	guess_us = [ 1.305317188787775961600345908664,  0.397404995088832035943227083408,  0.161578046077853032524984655538,
 		-0.988957955336655647471388874692,  3.511650634766380285611830913695]
 
 
@@ -79,7 +79,7 @@ else :
 
 
 ipars = calibrate.initpars(params.flexpars('us'))
-ipars.fix('beta',0.97)
+ipars.fix('beta',0.92)
 ipars.fix('price',1)
 ipars.fix('tfp',1)
 ipars.free('sigma',   guess_us[0])
@@ -107,7 +107,7 @@ prob.set_moments(moms)
 # In[10]:
 
 
-prob.estimate(maxeval=1000)
+prob.estimate(maxeval=100000)
 
 
 # # Standard errors

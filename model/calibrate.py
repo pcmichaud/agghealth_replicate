@@ -162,7 +162,7 @@ class msm:
         distance = 0.0
         for m in self.moments:
             if m.name=='cshare':
-                m.sim = (aggs.C + self.flex.price*aggs.M)/aggs.Y
+                m.sim = aggs.C/aggs.Y
             if m.name=='mshare':
                 m.sim = aggs.M/aggs.Y*self.flex.price
             if m.name=='kshare':
@@ -208,8 +208,8 @@ class msm:
         moms = []
         for m in self.moments:
             if m.name=='cshare':
-                #m.sim = aggs.C/aggs.Y
-                m.sim = (aggs.C+self.flex.price*aggs.M)/aggs.Y
+                m.sim = aggs.C/aggs.Y
+                #m.sim = (aggs.C+self.flex.price*aggs.M)/aggs.Y
             if m.name=='mshare':
                 m.sim = aggs.M/aggs.Y*self.flex.price
             if m.name=='kshare':
@@ -356,7 +356,7 @@ class msm:
         opt.set_initial_step(dx)
 
         opt.set_maxeval(maxeval)
-        opt.set_xtol_abs(1e-4)
+        #opt.set_xtol_abs(1e-4)
         xopt = opt.optimize(theta)
         if opt.last_optimize_result()>0:
             self.opt_theta = xopt
@@ -381,16 +381,16 @@ class msm:
         self.eq.initax = initax
         thetas = self.initpar.extract_theta()
         n = self.nfreepar
-        eps = 1e-3*np.ones(n)
+        eps = 1e-4*np.ones(n)
         if self.country=='sp':
-            eps = 5e-3*np.ones(n)
+            eps = 1e-4*np.ones(n)
         G = np.zeros((self.nmoms,n))
         mbase = self.criterion_moms(thetas)
         # compute G (matrix of derivatives)
         for k in range(n):
             thetas_up = thetas[:]
             if self.country=='sp':
-                step = thetas_up[k]*eps[k]
+                step = eps[k]
                 thetas_up[k] = thetas_up[k] + step
             else:
                 step = eps[k]
