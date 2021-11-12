@@ -208,8 +208,7 @@ class msm:
         moms = []
         for m in self.moments:
             if m.name=='cshare':
-                m.sim = aggs.C/aggs.Y
-                #m.sim = (aggs.C+self.flex.price*aggs.M)/aggs.Y
+                m.sim = (aggs.C+self.flex.price*aggs.M)/aggs.Y
             if m.name=='mshare':
                 m.sim = aggs.M/aggs.Y*self.flex.price
             if m.name=='kshare':
@@ -236,7 +235,7 @@ class msm:
         del self.eq.stats.dp.value
         return np.array(moms)
 
-    def estimate(self,maxeval=-1):
+    def estimate(self,maxeval=10000):
         for m in self.moments:
             if m.name == 'mshare':
                 mshare = m.data
@@ -356,7 +355,7 @@ class msm:
         opt.set_initial_step(dx)
 
         opt.set_maxeval(maxeval)
-        #opt.set_xtol_abs(1e-4)
+        opt.set_xtol_abs(1e-5)
         xopt = opt.optimize(theta)
         if opt.last_optimize_result()>0:
             self.opt_theta = xopt
@@ -381,9 +380,9 @@ class msm:
         self.eq.initax = initax
         thetas = self.initpar.extract_theta()
         n = self.nfreepar
-        eps = 1e-4*np.ones(n)
+        eps = 1e-3*np.ones(n)
         if self.country=='sp':
-            eps = 1e-4*np.ones(n)
+            eps = 1e-3*np.ones(n)
         G = np.zeros((self.nmoms,n))
         mbase = self.criterion_moms(thetas)
         # compute G (matrix of derivatives)

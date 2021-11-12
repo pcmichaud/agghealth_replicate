@@ -94,7 +94,7 @@ ipars = calibrate.initpars(params.flexpars(co))
 ipars.fix('sigma',pars_us.loc['sigma','value'])
 ipars.fix('phi',  pars_us.loc['phi','value'])
 ipars.fix('psi',  pars_us.loc['psi','value'])
-ipars.fix('beta', 0.95)
+ipars.fix('beta', 0.97)
 ipars.free('delta_h1',guess[0])
 ipars.free('delta_h2',guess[1])
 ipars.free('tfp',     guess[2])
@@ -119,7 +119,7 @@ prob.set_moments(moms)
 # In[26]:
 
 
-prob.estimate(maxeval=-1)
+prob.estimate(maxeval=10000)
 
 
 # # Standard errors
@@ -144,7 +144,7 @@ df.loc['delta_h1','se'] = prob.se[0]
 df.loc['delta_h2','se'] = prob.se[1]
 df.loc['tfp','se'] = prob.se[2]
 df.loc['price','se'] = prob.se[3]
-df
+print(df)
 
 
 # In[29]:
