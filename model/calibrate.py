@@ -162,7 +162,7 @@ class msm:
         distance = 0.0
         for m in self.moments:
             if m.name=='cshare':
-                m.sim = aggs.C/aggs.Y
+                m.sim = (aggs.C + aggs.M*self.flex.price)/aggs.Y
             if m.name=='mshare':
                 m.sim = aggs.M/aggs.Y*self.flex.price
             if m.name=='kshare':
@@ -355,7 +355,7 @@ class msm:
         opt.set_initial_step(dx)
 
         opt.set_maxeval(maxeval)
-        opt.set_xtol_abs(1e-5)
+        opt.set_xtol_abs(1e-4)
         xopt = opt.optimize(theta)
         if opt.last_optimize_result()>0:
             self.opt_theta = xopt
