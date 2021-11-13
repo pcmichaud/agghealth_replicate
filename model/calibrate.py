@@ -360,6 +360,7 @@ class msm:
         if opt.last_optimize_result()>0:
             self.opt_theta = xopt
             self.opt_distance = opt.last_optimum_value()
+            print('estimation did converge, now computing standard errors...')
         else :
             self.opt_theta = theta
             self.opt_ditance = np.nan
