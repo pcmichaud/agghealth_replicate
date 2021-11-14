@@ -100,7 +100,7 @@ ipars.print()
 # In[9]:
 
 
-prob = calibrate.msm('us',initpar=ipars,nprocs=8,ge=True)
+prob = calibrate.msm('us',initpar=ipars,nprocs=48,ge=True)
 prob.set_moments(moms)
 
 
