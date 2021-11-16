@@ -10,6 +10,10 @@ from model.distributions import stationary
 from model.params import flexpars, incprocess, auxpars, settings
 from scipy.optimize import minimize
 import csv
+import os
+import pandas as pd 
+module_dir = os.path.dirname(os.path.dirname(__file__))
+
 
 class health_check:
     def __init__(self):
@@ -40,12 +44,12 @@ class equilibrium:
           self.stats = stationary()
      # inittal values
       self.inirent = inirent
+
       if initax==None:
-          with open('../moments/'+self.stats.dp.country+'/mshare.csv', mode='r') as infile:
-              reader = csv.reader(infile)
-              values = [rows for rows in reader]
-              mshare = float(values[0][0])
-              self.initax =  (1.0 - self.aux.copay) * mshare / (1.0 - self.aux.alpha)
+          co = self.aux.country
+          moms = pd.read_pickle(module_dir+'/estimation/moments/means_macro.pkl')
+          mshare = moms.loc['mshare',co.upper()]
+          self.initax =  (1.0 - self.aux.copay) * mshare / (1.0 - self.aux.alpha)
       else :
           self.initax = initax
       self.solve_tax = taxes
