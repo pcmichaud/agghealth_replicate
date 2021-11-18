@@ -150,7 +150,7 @@ class msm:
         self.initpar.set_flex()
         csumers = micro.bellman(options=self.op,flex=self.initpar.flex,inc=self.inc,aux=self.aux,rent=3e-2)
         stats = dist.stationary(dp=csumers,nk=100)
-        self.eq = macro.equilibrium(stats=stats,initax=self.initax,inirent=1.5e-2,rent=self.ge,taxes=False)
+        self.eq = macro.equilibrium(stats=stats,initax=self.initax,inirent=1.5e-2,rent=self.ge,taxes=True)
         self.eq.solve()
         aggs = self.eq.aggregates()
         report = self.eq.healthreport()
@@ -355,7 +355,7 @@ class msm:
         opt.set_initial_step(dx)
 
         opt.set_maxeval(maxeval)
-        opt.set_xtol_abs(1e-4)
+        opt.set_xtol_abs(1e-5)
         xopt = opt.optimize(theta)
         if opt.last_optimize_result()>0:
             self.opt_theta = xopt
