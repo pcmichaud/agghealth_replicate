@@ -355,7 +355,7 @@ class msm:
         opt.set_initial_step(dx)
 
         opt.set_maxeval(maxeval)
-        opt.set_xtol_abs(1e-5)
+        #opt.set_xtol_abs(1e-5)
         xopt = opt.optimize(theta)
         if opt.last_optimize_result()>0:
             self.opt_theta = xopt
