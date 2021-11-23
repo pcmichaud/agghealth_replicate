@@ -53,13 +53,13 @@ results   = pd.DataFrame(index=outcomes,columns=scenarios)
 
 p = pars.loc[:,'us']
 theta = params.flexpars(sigma=p['sigma'],beta=p['beta'],
-                            phi=p['phi'],psi=p['psi'],delta_h1=p['d1'],
-                            delta_h2=p['d2'],eta=0.0,tfp=p['tfp'],price=p['p'])
+                            phi=p['phi'],psi=p['psi'],delta_h1=p['delta_h1'],
+                            delta_h2=p['delta_h2'],eta=0.0,tfp=p['tfp'],price=p['price'])
 # option for the numerical solution
 ne = 10
 m  = 2.5
 #op = params.settings(ne=ne,nk=30,maxk=190.0,curv=0.5,nprocs=40)
-op = params.settings(ne=ne,nk=100,maxk=190.0,curv=0.5,nprocs=40)
+op = params.settings(ne=ne,nk=100,maxk=190.0,curv=0.5,nprocs=64)
 inc = params.incprocess(country='us')
 inc.tauchen(ne=ne,m=m)
 aux = params.auxpars(country='us')
@@ -78,9 +78,9 @@ aggs = eq.aggregates()
 hlth = eq.healthreport()
 
 # saving aggregate outcomes
-res = [aggs.M,aggs.Y,aggs.C,aggs.K,aggs.N,p['p']*aggs.M/aggs.Y,(aggs.C+p['p']*aggs.M)/aggs.Y,
+res = [aggs.M,aggs.Y,aggs.C,aggs.K,aggs.N,p['price']*aggs.M/aggs.Y,(aggs.C+p['price']*aggs.M)/aggs.Y,
        aggs.K/aggs.Y,hlth.pH,hlth.gradient[0],hlth.gradient[1],hlth.gradient[2],hlth.pTransGood,
-       hlth.pTransBad,eq.rent,eq.wage,eq.tax,aggs.M*p['p']*aux.copay]
+       hlth.pTransBad,eq.rent,eq.wage,eq.tax,aggs.M*p['price']*aux.copay]
 # saving decision rules
 size = stats.ne*stats.nh*stats.nk
 opt = pd.DataFrame(index=np.arange(0,size),columns=['e','h','k','ps','c','m','kp','v'])
@@ -131,13 +131,13 @@ results.loc['tbad','pus_ge']
 
 p = pars.loc[:,'us']
 theta = params.flexpars(sigma=p['sigma'],beta=p['beta'],
-                            phi=p['phi'],psi=p['psi'],delta_h1=p['d1'],
-                            delta_h2=p['d2'],eta=0.0,tfp=p['tfp'],price=p['p'])
+                            phi=p['phi'],psi=p['psi'],delta_h1=p['delta_h1'],
+                            delta_h2=p['delta_h2'],eta=0.0,tfp=p['tfp'],price=p['price'])
 # option for the numerical solution
 ne = 10
 m  = 2.5
 #op = params.settings(ne=ne,nk=30,maxk=190.0,curv=0.5,nprocs=40)
-op = params.settings(ne=ne,nk=100,maxk=190.0,curv=0.5,nprocs=40)
+op = params.settings(ne=ne,nk=100,maxk=190.0,curv=0.5,nprocs=64)
 inc = params.incprocess(country='us')
 inc.tauchen(ne=ne,m=m)
 aux = params.auxpars(country='us')
@@ -156,9 +156,9 @@ aggs = eq.aggregates()
 hlth = eq.healthreport()
 
 # saving aggregate outcomes
-res = [aggs.M,aggs.Y,aggs.C,aggs.K,aggs.N,p['p']*aggs.M/aggs.Y,(aggs.C+p['p']*aggs.M)/aggs.Y,
+res = [aggs.M,aggs.Y,aggs.C,aggs.K,aggs.N,p['price']*aggs.M/aggs.Y,(aggs.C+p['price']*aggs.M)/aggs.Y,
        aggs.K/aggs.Y,hlth.pH,hlth.gradient[0],hlth.gradient[1],hlth.gradient[2],hlth.pTransGood,
-       hlth.pTransBad,eq.rent,eq.wage,eq.tax,aggs.M*p['p']*aux.copay]
+       hlth.pTransBad,eq.rent,eq.wage,eq.tax,aggs.M*p['price']*aux.copay]
 # saving decision rules
 size = stats.ne*stats.nh*stats.nk
 opt = pd.DataFrame(index=np.arange(0,size),columns=['e','h','k','ps','c','m','kp','v'])
@@ -182,8 +182,8 @@ eqs = []
 
 
 #scenarios = ['pus_ge','peu_ge','peu_pe','aeu_ge','aeu_pe']
-opt.to_pickle('../output_JPE/opt_pus_ge3.pkl')
-file = open('../output_JPE/eq_pus_ge3.pkl','wb')
+opt.to_pickle('output/opt_pus_ge3.pkl')
+file = open('output/eq_pus_ge3.pkl','wb')
 pickle.dump(eq,file)
 file.close()
 results.loc[:,'pus_ge'] = res
@@ -213,7 +213,7 @@ results.loc['tbad','pus_ge']
 # In[11]:
 
 
-price_eu = pars.loc['p',[c for c in countries if c!='us']].mean()
+price_eu = pars.loc['price',[c for c in countries if c!='us']].mean()
 price_eu
 
 
@@ -222,8 +222,8 @@ price_eu
 
 # Change in health price
 theta0 = params.flexpars(sigma=p['sigma'],beta=p['beta'],
-                            phi=p['phi'],psi=p['psi'],delta_h1=p['d1'],
-                            delta_h2=p['d2'],eta=0.0,tfp=p['tfp'],price=price_eu)
+                            phi=p['phi'],psi=p['psi'],delta_h1=p['delta_h1'],
+                            delta_h2=p['delta_h2'],eta=0.0,tfp=p['tfp'],price=price_eu)
 
 
 # In[13]:
@@ -277,8 +277,8 @@ results0  = pd.DataFrame(index=outcomes,columns=scenarios)
 
 
 #scenarios = ['pus_ge','peu_ge','peu_pe','aeu_ge','aeu_pe']
-opt0.to_pickle('../output_JPE/opt_peu_ge3.pkl')
-file = open('../output_JPE/eq_peu_ge3.pkl','wb')
+opt0.to_pickle('output/opt_peu_ge3.pkl')
+file = open('output/eq_peu_ge3.pkl','wb')
 pickle.dump(eq0,file)
 file.close()
 results0.loc[:,'peu_ge'] = res0
@@ -383,8 +383,8 @@ results1  = pd.DataFrame(index=outcomes,columns=scenarios)
 
 
 #scenarios = ['pus_ge','peu_ge','peu_pe','aeu_ge','aeu_pe']
-opt1.to_pickle('../output_JPE/opt_peu_pe3.pkl')
-file = open('../output_JPE/eq_peu_pe3.pkl','wb')
+opt1.to_pickle('output/opt_peu_pe3.pkl')
+file = open('output/eq_peu_pe3.pkl','wb')
 pickle.dump(eq1,file)
 file.close()
 results1.loc[:,'peu_pe'] = res1
@@ -422,8 +422,8 @@ tfp_eu
 
 
 theta1 = params.flexpars(sigma=p['sigma'],beta=p['beta'],
-                         phi=p['phi'],psi=p['psi'],delta_h1=p['d1'],
-                         delta_h2=p['d2'],eta=0.0,tfp=tfp_eu,price=p['p'])
+                         phi=p['phi'],psi=p['psi'],delta_h1=p['delta_h1'],
+                         delta_h2=p['delta_h2'],eta=0.0,tfp=tfp_eu,price=p['price'])
 
 
 # In[33]:
@@ -444,9 +444,9 @@ aggs2 = eq2.aggregates()
 hlth2 = eq2.healthreport()
 
 # saving aggregate outcomes
-res2 = [aggs2.M,aggs2.Y,aggs2.C,aggs2.K,aggs2.N,price_eu*aggs2.M/aggs2.Y,(aggs2.C+p['p']*aggs2.M)/aggs2.Y,
+res2 = [aggs2.M,aggs2.Y,aggs2.C,aggs2.K,aggs2.N,p['price']*aggs2.M/aggs2.Y,(aggs2.C+p['price']*aggs2.M)/aggs2.Y,
        aggs2.K/aggs2.Y,hlth2.pH,hlth2.gradient[0],hlth2.gradient[1],hlth2.gradient[2],hlth2.pTransGood,
-       hlth2.pTransBad,eq2.rent,eq2.wage,eq2.tax,aggs2.M*p['p']*aux.copay]
+       hlth2.pTransBad,eq2.rent,eq2.wage,eq2.tax,aggs2.M*p['price']*aux.copay]
 # saving decision rules
 size = stats2.ne*stats2.nh*stats2.nk
 opt2 = pd.DataFrame(index=np.arange(0,size),columns=['e','h','k','ps','c','m','kp','v'])
@@ -477,8 +477,8 @@ results2  = pd.DataFrame(index=outcomes,columns=scenarios)
 
 
 #scenarios = ['pus_ge','peu_ge','peu_pe','aeu_ge','aeu_pe']
-opt2.to_pickle('../output_JPE/opt_aeu_ge3.pkl')
-file = open('../output_JPE/eq_aeu_ge3.pkl','wb')
+opt2.to_pickle('output/opt_aeu_ge3.pkl')
+file = open('output/eq_aeu_ge3.pkl','wb')
 pickle.dump(eq2,file)
 file.close()
 results2.loc[:,'aeu_ge'] = res2
@@ -560,8 +560,8 @@ results3  = pd.DataFrame(index=outcomes,columns=scenarios)
 
 
 #scenarios = ['pus_ge','peu_ge','peu_pe','aeu_ge','aeu_pe']
-opt3.to_pickle('../output_JPE/opt_aeu_pe3.pkl')
-file = open('../output_JPE/eq_aeu_pe3.pkl','wb')
+opt3.to_pickle('output/opt_aeu_pe3.pkl')
+file = open('output/eq_aeu_pe3.pkl','wb')
 pickle.dump(eq3,file)
 file.close()
 results3.loc[:,'aeu_pe'] = res3
@@ -608,8 +608,7 @@ ResTot.loc[:,'aeu_pe'] = results3
 # In[49]:
 
 
-ResTot.to_pickle('../output_JPE/welfare_aggregates3.pkl')
-
+ResTot.to_pickle('output/table_10-11_aggregates.pkl')
 
 # In[ ]:
 
