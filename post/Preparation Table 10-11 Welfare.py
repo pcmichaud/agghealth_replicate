@@ -13,18 +13,29 @@ from importlib import reload
 import pandas as pd
 import pickle
 
+import os
+import sys
 
-# In[2]:
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
 
 from model import micro,macro,params
 from model import distributions as dist
 
 
+
+# In[2]:
+
+
+
+
 # ## Model parameters
 
 # In[3]:
 
+countries = ['us','fr','sp','it','dk','de','nl','se']
 
 df = pd.read_pickle('../estimation/output/params_ref_us.pkl')
 pars = df.loc[:,'value'].to_frame()
