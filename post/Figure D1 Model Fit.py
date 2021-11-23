@@ -157,26 +157,30 @@ moms = pd.read_pickle('output/moms.pkl')
 moms = moms.sort_index()
 moms_sim = moms_sim.sort_index()
 
-print(moms_sim.head())
-print(moms.head())
+print(moms_sim)
+print(moms)
 
 # In[ ]:
 
 
 def fit_moment(name,moms,moms_sim,show=False):
-	plt.figure()
-	plt.scatter(moms[name],moms_sim[name],facecolors='none',edgecolors='b',s=500.0)
-	plt.plot(moms[name],moms[name])
-	plt.xlabel('data')
-	plt.ylabel('simulated data')
-	for c in countries:
-    		plt.annotate(c,xy=(moms.loc[c.upper(),name], moms_sim.loc[c.upper(),name]),
-		    horizontalalignment='center', verticalalignment='center')
-	plt.savefig('../figures/fig_d1_'+name+'.eps',dpi=1200)
-	print('figure ','../figures/fig_d1_'+name+'.eps',' saved...')
-	if show:
-		plt.show()
-	return
+    max_m = 1.05*max(moms[name].max(),moms_sim[name].max())
+    min_m = 0.95*min(moms[name].min(),moms_sim[name].min())
+    plt.figure()
+    plt.scatter(moms[name],moms_sim[name],facecolors='none',edgecolors='b',s=500.0)
+    plt.plot(moms[name],moms[name])
+    plt.xlabel('data')
+    plt.xlim([min_m,max_m])
+    plt.ylim([min_m,max_m])
+    plt.ylabel('simulated data')
+    for c in countries:
+            plt.annotate(c,xy=(moms.loc[c.upper(),name], moms_sim.loc[c.upper(),name]),
+            horizontalalignment='center', verticalalignment='center')
+    plt.savefig('../figures/fig_d1_'+name+'.eps',dpi=1200)
+    print('figure ','../figures/fig_d1_'+name+'.eps',' saved...')
+    if show:
+        plt.show()
+    return
 
 
 # In[ ]:

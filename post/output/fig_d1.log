@@ -6,3 +6,38 @@ doing country  it
 doing country  nl
 doing country  se
 doing country  sp
+      cshare    mshare        gb  ...      g_q3      g_q4       tfp
+DE  0.747475  0.102762  0.488755  ...  1.037385  1.046837  0.823013
+DK  0.776568  0.088634  0.427615  ...  1.025553  1.035745  0.900990
+FR  0.769039  0.108333  0.500298  ...  1.082895  1.087157  0.732520
+IT  0.710800  0.081824  0.272530  ...  1.066782  1.100864  0.733720
+NL  0.750653  0.081014  0.641872  ...  1.029750  1.031810  0.870789
+
+[5 rows x 9 columns]
+    cshare    mshare       tfp  ...      g_q3      g_q4         h
+co                              ...                              
+DE     NaN  0.102286  0.830156  ...  1.069782  1.084729  0.926259
+DK     NaN  0.090629  0.898205  ...  1.082148  1.101376  0.945763
+FR     NaN  0.103574  0.735264  ...  1.056107  1.090147  0.924005
+IT     NaN  0.081089  0.739971  ...  1.010800  1.039274  0.919831
+NL     NaN  0.088282  0.872562  ...  1.024104  1.023796  0.947703
+
+[5 rows x 10 columns]
+figure  ../figures/fig_d1_mshare.eps  saved...
+moment : mshare  ,spearman =  [0.9285714285714287, 0.0008629681828999769]
+figure  ../figures/fig_d1_tfp.eps  saved...
+moment : tfp  ,spearman =  [1.0, 0.0]
+figure  ../figures/fig_d1_gg.eps  saved...
+moment : gg  ,spearman =  [0.5952380952380953, 0.11952980613879259]
+figure  ../figures/fig_d1_gb.eps  saved...
+moment : gb  ,spearman =  [0.6428571428571429, 0.08555889101267318]
+figure  ../figures/fig_d1_g_q2.eps  saved...
+moment : g_q2  ,spearman =  [-0.19047619047619052, 0.6514014957024814]
+figure  ../figures/fig_d1_g_q3.eps  saved...
+moment : g_q3  ,spearman =  [-0.11904761904761905, 0.7788857260523797]
+figure  ../figures/fig_d1_g_q4.eps  saved...
+moment : g_q4  ,spearman =  [0.28571428571428575, 0.4927262450169573]
+figure  ../figures/fig_d1_h.eps  saved...
+moment : h  ,spearman =  [0.8571428571428572, 0.006530017254715292]
+- unweighted (price,tfp) =  (0.7506462150805132, 0.9193717258623133)
+- weighted (price,tfp) =  (0.7279422153986047, 0.8777386713659476)

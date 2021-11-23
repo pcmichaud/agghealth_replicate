@@ -1,0 +1,55 @@
+               us   fr   sp   it   dk   de   nl   se
+baseline      NaN  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+price         NaN  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+efficiency    NaN  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+health risks  NaN  NaN  NaN  NaN  NaN  NaN  NaN  NaN
+stats           s                  h                  g              
+regions        us   eu $\Delta$   us   eu $\Delta$   us   eu $\Delta$
+baseline      NaN  NaN      NaN  NaN  NaN      NaN  NaN  NaN      NaN
+price         NaN  NaN      NaN  NaN  NaN      NaN  NaN  NaN      NaN
+efficiency    NaN  NaN      NaN  NaN  NaN      NaN  NaN  NaN      NaN
+health risks  NaN  NaN      NaN  NaN  NaN      NaN  NaN  NaN      NaN
+                us        de        dk  ...        nl        se        sp
+name                                    ...                              
+sigma     2.097183  2.097183  2.097183  ...  2.097183  2.097183  2.097183
+beta      0.970000  0.970000  0.970000  ...  0.970000  0.970000  0.970000
+phi       0.304140  0.304140  0.304140  ...  0.304140  0.304140  0.304140
+psi       0.168902  0.168902  0.168902  ...  0.168902  0.168902  0.168902
+delta_h1 -0.967380 -1.296156 -1.601068  ... -1.264525 -1.525023 -0.005673
+delta_h2  3.478244  3.953905  4.273184  ...  3.998342  4.310607  3.394047
+eta       0.000000  0.000000  0.000000  ...  0.000000  0.000000  0.000000
+tfp       1.000000  1.008961  1.255176  ...  1.009820  0.788306  0.810865
+price     1.000000  0.846861  0.887615  ...  0.698165  0.843816  0.650287
+risk      0.000000  0.000000  0.000000  ...  0.000000  0.000000  0.000000
+
+[10 rows x 8 columns]
+country =  us , s =  0.14333364379748706 , h =  0.8772142235214611 , grad4 =  1.3104624878811222
+country =  de , s =  0.10347578059052007 , h =  0.9621203909132392 , grad4 =  1.0474865823055426
+country =  dk , s =  0.0885335225141754 , h =  0.9692726807057345 , grad4 =  1.0339587107466415
+country =  fr , s =  0.10706918054140373 , h =  0.9535273501126401 , grad4 =  1.085307698205524
+country =  it , s =  0.08263929935537054 , h =  0.9278575951794314 , grad4 =  1.1061696389838254
+country =  nl , s =  0.08081510433492149 , h =  0.9719651640135559 , grad4 =  1.031761982535919
+country =  se , s =  0.08640854638673234 , h =  0.967016486126641 , grad4 =  1.020984874142844
+country =  sp , s =  0.07474324051344178 , h =  0.9274104478606234 , grad4 =  1.13981821029906
+s (baseline) =                      us        fr        sp  ...        de        nl        se
+baseline      0.143334  0.107069  0.074743  ...  0.103476  0.080815  0.086409
+price              NaN       NaN       NaN  ...       NaN       NaN       NaN
+efficiency         NaN       NaN       NaN  ...       NaN       NaN       NaN
+health risks       NaN       NaN       NaN  ...       NaN       NaN       NaN
+
+[4 rows x 8 columns]
+h (baseline) =                      us        fr       sp  ...       de        nl        se
+baseline      0.877214  0.953527  0.92741  ...  0.96212  0.971965  0.967016
+price              NaN       NaN      NaN  ...      NaN       NaN       NaN
+efficiency         NaN       NaN      NaN  ...      NaN       NaN       NaN
+health risks       NaN       NaN      NaN  ...      NaN       NaN       NaN
+
+[4 rows x 8 columns]
+g (baseline) =                      us        fr        sp  ...        de        nl        se
+baseline      1.310462  1.085308  1.139818  ...  1.047487  1.031762  1.020985
+price              NaN       NaN       NaN  ...       NaN       NaN       NaN
+efficiency         NaN       NaN       NaN  ...       NaN       NaN       NaN
+health risks       NaN       NaN       NaN  ...       NaN       NaN       NaN
+
+[4 rows x 8 columns]
+average price in EU =  0.7506462150805132
