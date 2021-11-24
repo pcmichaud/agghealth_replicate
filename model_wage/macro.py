@@ -4,10 +4,10 @@ import itertools
 from functools import partial
 #from numba import jit
 from scipy.interpolate import interp1d
-from model.foncs import invest
-from model.micro import bellman
-from model.distributions import stationary
-from model.params import flexpars, incprocess, auxpars, settings
+from model_wage.foncs import invest
+from model_wage.micro import bellman
+from model_wage.distributions import stationary
+from model_wage.params import flexpars, incprocess, auxpars, settings
 from scipy.optimize import minimize
 import csv
 import os
@@ -55,9 +55,7 @@ class equilibrium:
       self.solve_rent = rent
       return
   def market(self,rent,tax):
-      nagg = self.labor()
-      kd = self.demand(rent,nagg)
-      wage = self.get_wage(nagg,kd)
+      wage = self.get_wage(rent)
       self.stats.dp.set_wage(wage)
       self.stats.dp.set_rent(rent)
       self.stats.dp.set_tax(tax)
@@ -66,30 +64,26 @@ class equilibrium:
       self.stats.compute()
       kdist = self.stats.get_kdist()
       ks = np.sum([k*p for k,p in zip(self.stats.gridk,kdist)])
+      nagg = self.labor() 
+      kd = self.demand(rent,nagg)
       return kd,ks
   def demand(self,rent,nagg):
       den = self.aux.alpha*self.flex.tfp*(nagg**(1.0-self.aux.alpha))
       num = rent + self.aux.delta_k
       return (num/den)**(1.0/(self.aux.alpha-1.0))
   def labor(self):
-      tn = self.inc.tprob.copy()
-      pn = (1.0/self.op.ne)*np.ones((self.op.ne,1))
-      count = 1
-      while count<50:
-          tpn = np.transpose(tn).dot(pn)
-          criterion = np.max(np.abs(tpn - tn))
-          if criterion<1e-4:
-              pn = tpn.copy()
-              break
-          else :
-              pn = tpn.copy()
-              count +=1
-      nagg = np.sum([p*np.exp(e) for p,e in zip(pn,self.inc.pte)])
-      return nagg
-  def get_wage(self,nagg,kagg):
+    nagg = 0.0
+    for i,s in enumerate(self.stats.states):
+        e,h,k = s
+        nagg += self.stats.probs[i]*np.exp(self.inc.pte[e])*self.aux.Gamma[h]
+    return nagg
+  def get_wage(self,rent):
       alpha = self.aux.alpha
       tfp = self.flex.tfp
-      wage = (1.0-alpha) * tfp * (kagg**alpha) * (nagg**(-alpha))
+      delta = self.aux.delta_k
+      a = alpha/(1-alpha)
+      b = 1/(1-alpha)
+      wage = (1-alpha)*(alpha**a)*(tfp**b)*((rent + delta)**(-a))
       return wage
   def get_rent(self,nagg,kagg):
       alpha = self.aux.alpha
