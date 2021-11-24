@@ -9,7 +9,7 @@ import os
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
-from model_wage import micro, macro, params, distributions, calibrate
+from model_copay import micro, macro, params, distributions, calibrate
 from importlib import reload
 from scipy.optimize import minimize
 import numpy as np
@@ -136,7 +136,7 @@ print(table)
 # In[13]:
 
 
-table.to_latex('../tables/table_e1_wage_common_estimates.tex',escape=False)
+table.to_latex('../tables/table_e1_copay_common_estimates.tex',escape=False)
 
 
 # # Storing Parameters for other uses
@@ -160,5 +160,5 @@ print(df)
 # In[15]:
 
 
-df.to_pickle('output/params_wage_us.pkl')
+df.to_pickle('output/params_copay_us.pkl')
 
