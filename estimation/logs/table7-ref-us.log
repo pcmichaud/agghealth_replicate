@@ -562,15 +562,15 @@ grad4 1.2770998962196927 1.3049078398054637
 estimation did converge, now computing standard errors...
           $\sigma$    $\phi$ $\alpha_0$
 estimate  2.097183   0.30414   0.168902
-se        0.007989  0.151818   0.014146
+se        0.010304  0.135992   0.019482
              value   free        se
 name                               
-sigma     2.097183   True  0.007989
+sigma     2.097183   True  0.010304
 beta      0.970000  False       NaN
-phi       0.304140   True  0.151818
-psi       0.168902   True  0.014146
-delta_h1 -0.967380   True  0.097752
-delta_h2  3.478244   True  0.047065
+phi       0.304140   True  0.135992
+psi       0.168902   True  0.019482
+delta_h1 -0.967380   True  0.160692
+delta_h2  3.487244   True  0.051008
 eta       0.000000  False       NaN
 tfp       1.000000  False       NaN
 price     1.000000  False       NaN

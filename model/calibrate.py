@@ -381,9 +381,9 @@ class msm:
         self.eq.initax = initax
         thetas = self.initpar.extract_theta()
         n = self.nfreepar
-        eps = 1e-3*np.ones(n)
+        eps = 1e-2*np.ones(n)
         if self.country=='sp':
-            eps = 1e-3*np.ones(n)
+            eps = 1e-2*np.ones(n)
         G = np.zeros((self.nmoms,n))
         mbase = self.criterion_moms(thetas)
         # compute G (matrix of derivatives)
